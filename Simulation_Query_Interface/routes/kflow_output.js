@@ -17,9 +17,21 @@ router.post('/',function(req,res,next){
 
 	//file name
 	var name = '';
+
+	//IP address
+	var IP_str = fs.readFileSync('ddas.conf', 'utf8');
+	var IP_array = new Array();
+	IP_array = IP_str.split("\n");
+
+	var IP_num = IP_array[0].indexOf("=");
+	var IP = IP_array[0].substring(IP_num+1, IP_array[0].length-1);
+
+	var IP_metadata = 'mongodb://' + IP + '/metadata';
+	var IP_simulation = 'mongodb://' + IP + '/simulation';
+
 	
 	//metadata database connect
-	client.connect('mongodb://203.153.146.39/metadata', function(err,db){
+	client.connect(IP_metadata, function(err,db){
 		
 		//kflow collection connect
 		db.collection("kflow").find().toArray(function(err, result){
@@ -41,7 +53,7 @@ router.post('/',function(req,res,next){
 	})
 
 	//simulation database connect
-	client.connect('mongodb://203.153.146.39/simulation', function(err,db){
+	client.connect(IP_simulation, function(err,db){
 
 		//변수를 하나씩 쿼리문 dynamic
 		//if thickness

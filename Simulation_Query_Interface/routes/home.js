@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var client = require('mongodb').MongoClient;
+var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -8,8 +9,21 @@ router.get('/', function(req, res, next) {
 	//매개변수 array
 	var array = new Array();
 
+	//IP address
+	var IP_str = fs.readFileSync('ddas.conf', 'utf8');
+	var IP_array = new Array();
+	IP_array = IP_str.split("\n");
+
+	var IP_num = IP_array[0].indexOf("=");
+	var IP = IP_array[0].substring(IP_num+1, IP_array[0].length-1);
+
+	var IP_metadata = 'mongodb://' + IP + '/metadata';
+	var IP_simulation = 'mongodb://' + IP + '/simulation';
+
+	
+
 	//metadata접속
-	client.connect('mongodb://203.153.146.39/metadata', function(err,db){
+	client.connect(IP_metadata, function(err,db){
 
 		//kflow collection connect
 		db.collection('kflow').find().nextObject(function(err, result){ 
