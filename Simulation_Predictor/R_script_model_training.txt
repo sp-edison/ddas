@@ -68,7 +68,7 @@ mean(errors[errors < 1e+7]) # 이상치 제거 후 평균 오차(%)
 # Average Error = 3.74% (with outlier removal (# = 92))
 
 # CART regression
-ibrary(rpart)
+library(rpart)
 model <- rpart(Cl ~ thickness + Umach + AOA + RE, data = train_data, method="anova")
 predicted_Cl = predict(model, newdata = test_data)
 errors = abs((test_data$Cl - predicted_Cl)/test_data$Cl*100)

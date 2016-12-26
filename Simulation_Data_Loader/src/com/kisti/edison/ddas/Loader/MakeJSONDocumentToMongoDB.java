@@ -1,11 +1,15 @@
 package com.kisti.edison.ddas.Loader;
 
+import org.bson.Document;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteConcern;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 /** This class connects to MongoDB and save simulation data.
  *  
@@ -37,10 +41,10 @@ public class MakeJSONDocumentToMongoDB {
 			mongoClient.setWriteConcern(w);
 
 			//Simulation DB connection
-			DB db = mongoClient.getDB("simulation");
+			MongoDatabase db = mongoClient.getDatabase("simulation");
 
 			//Get the kflow collection
-			DBCollection coll = db.getCollection("kflow");
+			MongoCollection<Document> coll = db.getCollection("kflow");
 
 			//Make JSON document for attaching the all data
 			DBObject doc_all = new BasicDBObject();
